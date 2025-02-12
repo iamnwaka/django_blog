@@ -1,0 +1,14 @@
+{% extends 'app1/base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ blog.title }}</h1>
+{% if blog.image %}
+<img src="{{ blog.image.url }}" alt="Blog Image" style="width: 300px; height: auto;">
+{% endif %}
+<p><strong>Category:</strong> {{ blog.category }}</p>
+<p>{{ blog.content }}</p>
+<p><small>Posted on {{ blog.created_at }}</small></p>
+<a href="{% url 'home' %}">Back to Home</a>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends 'app1/base.html' %}
+
+{% block title %}Home{% endblock %}
+{% load static %}
+{% block content %}
+<!-- Page Content -->
+<!-- Banner Starts Here -->
+<div class="main-banner header-text">
+    <div class="container-fluid">
+        <div class="owl-banner owl-carousel">
+            {% for blog in blogs %}
+            <div class="item">
+                {% if blog.image %}
+                <img src="{{ blog.image.url }}" alt="">
+                {% endif %}
+                <div class="item-content">
+                    <div class="main-content">
+                        <div class="meta-category">
+                            <span>{{ blog.title }}</span>
+                        </div>
+                        <a href="{% url 'blog_detail' blog.id %}">
+                            <h4>{{ blog.content|truncatewords:20 }}</h4>
+                        </a>
+                        <ul class="post-info">
+                            <li><a href="#">Admin</a></li>
+                            <li><a href="#">{{ blog.created_at }}</a></li>
+                            <li><a href="#">12 Comments</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No blog posts found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Banner Ends Here -->
+
+<section class="call-to-action">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-content">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <span>Stand Blog HTML5 Template</span>
+                            <h4>Creative HTML Template For Bloggers!</h4>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="main-button">
+                                <a rel="nofollow" href="https://templatemo.com/tm-551-stand-blog"
+                                    target="_parent">Download Now!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="blog-posts">
+    <div class="container">
+        <div class="row">
+            <!-- Main Content (Blog Posts) -->
+            <div class="col-lg-8">
+                <div class="all-blog-posts">
+                    <div class="row">
+                        {% for blog in blogs %}
+                        <div class="col-lg-12">
+                            <div class="blog-post">
+                                <div class="blog-thumb">
+                                    {% if blog.image %}
+                                    <img src="{{ blog.image.url }}" alt="">
+                                    {% endif %}
+                                </div>
+                                <div class="down-content">
+                                    <span>{{ blog.category }}</span>
+                                    <a href="{% url 'blog_detail' blog.id %}">
+                                        <h4>{{ blog.title }}</h4>
+                                    </a>
+                                    <ul class="post-info">
+                                        <li><a href="#">Admin</a></li>
+                                        <li><a href="#">{{ blog.created_at }}</a></li>
+                                        <li><a href="#">12 Comments</a></li>
+                                    </ul>
+                                    <p>{{ blog.content|truncatewords:20 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p>No blog posts found.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar (Categories, Search, Recent Posts, Tags) -->
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <!-- Search -->
+                    <div class="sidebar-item search">
+                        <form id="search_form" method="GET" action="#">
+                            <input type="text" name="q" class="searchText" placeholder="Type to search..."
+                                autocomplete="on" value="{{ query }}">
+                        </form>
+                    </div>
+
+                    <!-- Recent Posts -->
+                    <div class="sidebar-item recent-posts">
+                        <div class="sidebar-heading">
+                            <h2>Recent Posts</h2>
+                        </div>
+                        <div class="content">
+                            <ul>
+                                {% for recent_blog in blogs %}
+                                <li>
+                                    <a href="{% url 'blog_detail' recent_blog.id %}">
+                                        <h5>{{ recent_blog.title }}</h5>
+                                        <span>{{ recent_blog.created_at|date:"M d, Y" }}</span>
+                                    </a>
+                                </li>
+                                {% empty %}
+                                <p>No recent posts.</p>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <!-- Categories -->
+                    <div class="sidebar-item categories">
+                        <div class="sidebar-heading">
+                            <h2>Categories</h2>
+                        </div>
+                        <div class="content">
+                            <ul>
+                                <li><a href="?category=" {% if not selected_category %}class="active" {% endif %}>- AllCategories</a></li>
+                                {% for cat in categories %}
+                                <li>
+                                    <a href="?category={{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %} class="active" {% endif %}>
+                                        - {{ cat.name }}
+                                    </a>
+                                </li>
+                                {% empty %}
+                                <p>No categories available.</p>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <!-- Tag Clouds -->
+                <!-- Tag Clouds -->
+            <div class="sidebar-item tags">
+                <div class="sidebar-heading">
+                    <h2>Tag Clouds</h2>
+                </div>
+                <div class="content">
+                    <ul>
+                        {% for tag in tags %}
+                        <li><a href="?tag={{ tag.id }}">{{ tag.name }}</a></li>
+                        {% empty %}
+                        <p>No tags available.</p>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            </div>
+        </div> <!-- End Sidebar -->
+
+    </div> <!-- End Row -->
+    </div> <!-- End Container -->
+</section>
+
+{% endblock content %}
+
+
+
