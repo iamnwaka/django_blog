@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import format_html
+from .forms import CommentForm
+
 
 
 # Create your views here.
@@ -130,3 +132,32 @@ def login(request):
             messages.error(request, "Invalid credentials!")
 
     return render(request, 'app1/login.html')
+
+
+
+def details(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    comments = blog.comments.all()  # Get all comments for this blog post
+
+    if request.method == "POST":
+        if request.user.is_authenticated:  # Ensure user is logged in
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.post = blog  # Link the comment to the blog post
+                comment.user = request.user  # Assign the logged-in user
+                comment.save()
+                return redirect('details', blog_id=blog.id)  # Refresh the page after comment
+        else:
+            return redirect('login')  # Redirect to login if user isn't logged in
+    else:
+        form = CommentForm()
+
+    context = {
+        'blog': blog,
+        'comments': comments,
+        'form': form,
+    }
+    return render(request, 'app1/details.html', context)
+
+    

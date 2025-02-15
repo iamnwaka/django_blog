@@ -34,3 +34,27 @@ class Client(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+
+
+
+
+class Comment(models.Model):  
+    # Each comment is linked to a specific blog post using a ForeignKey
+    post = models.ForeignKey(
+        'Blog',  # Replace 'app1' with your actual app name
+        on_delete=models.CASCADE,  
+        related_name='comments'  # Allows us to access comments via post.comments.all()
+    )
+
+    # The user who made the comment
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # The actual text of the comment
+    content = models.TextField()
+
+    # Timestamp when the comment was created (auto-filled)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):  
+        return f'Comment by {self.user.username} on {self.post.title}'

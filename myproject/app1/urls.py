@@ -13,6 +13,7 @@ urlpatterns = [
     path('app3/', views.app3_page, name='app3_page'),
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
+    path('blog/<int:blog_id>/', views.details, name='details'),
 
 ]
 
